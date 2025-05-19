@@ -15,12 +15,40 @@ public class NewsApiService {
     newsDAO = new NewsDAO();
   }
 
-//  @GET
-//  @Produces(MediaType.APPLICATION_JSON)
-//  public List<News> getNews() {
-//    newsDAO.addNews();
-//    return null;
-//  }
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<News> getAllNews() {
+    List<News> newsList = null;
+    try {
+      newsList = newsDAO.getAll();
+    } catch (Exception e) {
+      return null;
+    }
+    return newsList;
+  }
+
+  @DELETE
+  @Path("/{aid}")
+  public String delNews(@PathParam("aid") int aid) {
+    try {
+      newsDAO.delNews(aid);
+    } catch (Exception e) {
+      return "news api : 뉴스 삭제 실패"; // 204
+    }
+    return "news api : 뉴스 삭제 성공"; // 204
+  }
+
+  @GET
+  @Path("/{aid}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public News getNews(@PathParam("aid") int aid) {
+    News news = null;
+    try {
+      news = newsDAO.getNews(aid);
+    } catch (Exception e) {
+    }
+    return news;
+  }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
